@@ -1,108 +1,79 @@
-import java.util.Scanner;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-public class Main
-{
-    
-    
+ public class Main {
     public static void main(String[] args) {
-        HashMap<String, Object[]> inventory = new HashMap<>();
-        
-        addItem(inventory, "Laptop", 1200, 10);
-        addItem(inventory, "Mouse", 25.50, 50);
-        addItem(inventory, "Keyboard", 50.75, 30);
-        
-        Scanner input = new Scanner (System.in);
-        boolean Open = true;
-        
-        while (Open){
-            System.out.println("\nInventory Management System ");
+        Scanner scanner = new Scanner(System.in);
+        HashMap<String, Integer> inventory = new HashMap<>();
+        HashMap<String, Double> prices = new HashMap<>();
+
+       
+        inventory.put("Laptop", 10);
+        inventory.put("Mouse", 50);
+        inventory.put("Keyboard", 30);
+
+        prices.put("Laptop", 1200.00);
+        prices.put("Mouse", 25.50);
+        prices.put("Keyboard", 50.76);
+
+        while (true) {
+            System.out.println("\nInventory Management System");
             System.out.println("1. Add Item");
             System.out.println("2. Set Quantity");
             System.out.println("3. Display Inventory");
             System.out.println("4. Exit");
-            System.out.print("Enter your Choice: ");
-            
-            int choice = input.nextInt();
-            input.nextLine();
-            
-            switch (choice){
- 
-                    
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
                 case 1:
-                     System.out.print("\nEnter item name: ");
-                     String newitem = input.nextLine();
-                     if (inventory.containsKey(newitem)){
-                         System.out.println("\nAlready on the list ");
-                         
-                     }else{
-                         System.out.print("Enter Price: ");
-                         double newprice = input.nextDouble();
-                         System.out.print("Enter Quantity: ");
-                         int newquanty = input.nextInt();
-                        }
-                        
-                        break;
-                          
-                
-                        
+                    System.out.print("Enter item name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter item price: ");
+                    double price = scanner.nextDouble();
+                    System.out.print("Enter item quantity: ");
+                    int quantity = scanner.nextInt();
+
+                    inventory.put(name, inventory.getOrDefault(name, 0) + quantity);
+                    prices.put(name, price);
+                    System.out.println("Item added successfully.");
+                    break;
+
                 case 2:
-                     System.out.print("\nEnter Item: ");
-                     String CQ = input.nextLine();
-                
-                     if (inventory.containsKey(CQ)){
-                        System.out.print("Enter New Quantity: ");
-                        inventory.get(CQ)[0] = input.nextInt();
-                     
-                        System.out.println("Successfully Change ");
-                     } else {
-                       System.out.println("Item not Found");
+                    System.out.print("Enter item name: ");
+                    String newitem = scanner.nextLine();
+                    if (inventory.containsKey(newitem)) {
+                        System.out.print("Enter new quantity: ");
+                        int newquantity = scanner.nextInt();
+                        if (newquantity>= 0) {
+                            inventory.put(newitem, newquantity);
+                            System.out.println("Quantity of " + newitem + " set to " + newquantity);
+                        }
+                    } else {
+                        System.out.println("Item not found.");
                     }
-                break;     
-                        
+                    break;
 
-                 case 3:
-                    System.out.println("Inventory: ");
-                    System.out.printf("\n%-20s %-15s %-15s%n", "Item", "Price", "Quantity");
-                    System.out.println("--------------------------------------------------------------------");
-                    for (Map.Entry<String, Object[]> entry : inventory.entrySet()){
-                    String item = entry.getKey();
-                    double price = (double) entry.getValue()[0];
-                    int quanty = (int) entry.getValue()[1];
-                    System.out.printf("%-20s %-15.2f %-15.2d%n", item, price, quanty);
-                      }
-                    
-                    break; 
-                    
-                 case 4:
-                   Open = false;
-                   System.out.println("Exited Successfully");
-                   break;
+                case 3:
+                    System.out.printf("\n%-15s %-10s %-10s%n", "Item", "Price", "Quantity");
+                    System.out.println("-----------------------------------------");
+                    for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
+                        System.out.printf("%-15s %-9.2f %-10d%n",
+                                entry.getKey(), prices.get(entry.getKey()), entry.getValue());
+                    }
+                    break;
 
+                case 4:
+                    System.out.println("Exiting program..."); 
+                    break;
                     
-                 default:
-                 System.out.println("Invalid Choice. Please Try Again");
-
                     
-    
+                default:
+                    System.out.println("Invalid choice! Please try again");
             }
-
-                
-            }
-
-     
-        
+        }
     }
-    
-    
-      public static void addItem(HashMap<String, Object[]> inventory, String item, double price, int quanty){
-        inventory.put(item, new Object[]{price, quanty});
-
-    }
-        
-        
-    
 }
-
-
